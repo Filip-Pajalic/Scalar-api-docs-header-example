@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ApiReference } from '@scalar/api-reference'
-import '@scalar/api-reference/style.css'
 import AppHeader from './components/AppHeader.vue'
+import ScalarApiReferenceWrapper from './components/ScalarApiReferenceWrapper.vue'
 import SidebarNavItems from './components/SidebarNavItems.vue'
 
 // Navigation items for mobile sidebar (via #sidebar-start slot)
@@ -12,7 +11,7 @@ const navItems = [
   { label: 'Register', href: 'https://dashboard.scalar.com/register', variant: 'cta' as const },
 ]
 
-// Native Scalar configuration - no CSS hacks needed
+// Native Scalar configuration
 const configuration = {
   url: 'https://registry.scalar.com/@scalar/apis/galaxy?format=yaml',
 
@@ -42,25 +41,27 @@ const configuration = {
     <!-- External header for desktop (hidden on mobile via CSS variable) -->
     <AppHeader />
 
-    <!-- Scalar ApiReference with native Vue component and slots -->
-    <ApiReference :configuration="configuration">
+    <!-- Wrapper component encapsulates sidebar positioning CSS for custom header -->
+    <ScalarApiReferenceWrapper :configuration="configuration">
       <!-- Native slot for mobile sidebar content -->
       <template #sidebar-start>
         <SidebarNavItems :items="navItems" />
       </template>
-    </ApiReference>
+    </ScalarApiReferenceWrapper>
   </div>
 </template>
 
 <style>
 /*
- * MINIMAL CSS - Only CSS variables for layout integration
- * All other styling is handled by native Scalar features
+ * Global CSS variables for custom header integration
+ * These are read by Scalar's internal calculations
  */
 
 :root {
-  /* Tell Scalar about our custom header height */
+  /* Scalar reads this natively for viewport calculations */
   --scalar-custom-header-height: 49px;
+  --full-height: 100dvh;
+  --document-height: calc(var(--full-height) - var(--scalar-custom-header-height));
 }
 
 /* Basic app layout */
