@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppHeader from './components/AppHeader.vue'
-import ScalarApiReferenceWrapper from './components/ScalarApiReferenceWrapper.vue'
+import PatchedApiReference from './components/PatchedApiReference.vue'
 import SidebarNavItems from './components/SidebarNavItems.vue'
 
 // Navigation items for mobile sidebar (via #sidebar-start slot)
@@ -41,13 +41,13 @@ const configuration = {
     <!-- External header for desktop (hidden on mobile via CSS variable) -->
     <AppHeader />
 
-    <!-- Wrapper component encapsulates sidebar positioning CSS for custom header -->
-    <ScalarApiReferenceWrapper :configuration="configuration">
+    <!-- Patched component adds mobile header actions via Teleport -->
+    <PatchedApiReference :configuration="configuration">
       <!-- Native slot for mobile sidebar content -->
       <template #sidebar-start>
         <SidebarNavItems :items="navItems" />
       </template>
-    </ScalarApiReferenceWrapper>
+    </PatchedApiReference>
   </div>
 </template>
 

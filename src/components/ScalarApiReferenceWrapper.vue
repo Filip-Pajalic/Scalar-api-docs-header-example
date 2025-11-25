@@ -41,11 +41,10 @@ defineSlots<{
 <style scoped>
 /*
  * Wrapper component for Scalar API Reference with custom header integration
- * Based on Scalar's official nextjs-api-reference example
  *
- * These overrides are necessary because Scalar's sidebar uses hardcoded
- * `sticky top-0 h-dvh` positioning (see MobileHeader.vue:40) and doesn't
- * natively handle external custom headers.
+ * These overrides are necessary because:
+ * 1. Scalar's sidebar uses hardcoded `sticky top-0 h-dvh` positioning (MobileHeader.vue:40)
+ * 2. Sidebar doesn't natively account for external headers
  */
 
 .scalar-api-reference-wrapper :deep(.scalar-api-reference .t-doc__sidebar),
@@ -62,6 +61,23 @@ defineSlots<{
     top: 0 !important;
     height: auto !important;
     max-height: none !important;
+  }
+
+  /*
+   * Mobile Header Actions (guides.scalar.com behavior):
+   * - Hide search bar in sidebar (we have search icon in mobile header)
+   * - Hide dark mode toggle when burger menu is expanded
+   */
+
+  /* Hide search button in sidebar on mobile - only use search icon in header */
+  .scalar-api-reference-wrapper :deep(.scalar-api-reference button[role="search"]),
+  .scalar-api-reference-wrapper :deep(.scalar-api-reference .bg-sidebar-b-search) {
+    display: none !important;
+  }
+
+  /* Hide dark mode toggle when burger menu is expanded (matches guides.scalar.com) */
+  .scalar-api-reference-wrapper :deep(.scalar-api-reference.references-sidebar-mobile-open .mobile-header-darkmode-toggle) {
+    display: none;
   }
 }
 </style>
